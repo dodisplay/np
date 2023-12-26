@@ -1,0 +1,31 @@
+#include<unistd.h>
+#include<sys/types.h>
+#include<sys/wait.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int main()
+{
+int fd[2];
+char buffer[100];
+pid_t p;
+pipe(fd);
+p=fork();
+if(p>0)
+{
+printf("Parent Process ID = %d\n",getpid());
+printf("Child Process ID = %d\n",p);
+printf("Sending Data to Child Process!!!");
+write(fd[1],"The Sending Data\n",16);
+}
+else
+{
+printf("Parent Process ID = %d\n",getppid());
+printf("Child Process ID = %d\n",getpid());
+printf("recieving data from Parent Process!!!");
+read(fd[0],buffer,50);
+printf("the data recived by child is - \n%s",buffer);
+}
+return 0;
+}
