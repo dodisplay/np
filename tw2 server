@@ -1,0 +1,40 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+
+#define PORT 4444
+
+int main()
+{
+int listenfd,connfd;
+char buffer[1024];
+socklen_t clilen;
+struct sockaddr_in server,client;
+
+listenfd=socket(AF_INET,SOCK_STREAM,0);
+printf("SERVER SOCKET CREATED\n");
+
+server.sin_family=AF_INET;
+server.sin_port=htons(PORT);
+server.sin_addr.s_addr=inet_addr("127.0.0.1");
+
+bind(listenfd,(struct sockaddr *)&server,sizeof(server));
+printf("Socket is binded to PORT %d \n",PORT);
+
+listen(listenfd,5);
+printf("Listening!!!!!!!\n");
+
+connfd=accept(listenfd,(struct sockaddr *)&client,&clilen);
+printf("Connection Established\n");
+
+strcpy(buffer,"HELLO WORLD");
+send(connfd,buffer,sizeof(buffer),0);
+
+printf("DATA DELIVERED TO CLIENT");
+
+return 0;
+}
