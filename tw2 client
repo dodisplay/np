@@ -1,0 +1,33 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/socket.h>
+#include<sys/types.h>
+#include<netinet/in.h>
+#include<arpa/inet.h>
+
+#define PORT 4444
+
+int main()
+{
+int sockfd;
+struct sockaddr_in server;
+char buffer[1024];
+
+
+sockfd=socket(AF_INET,SOCK_STREAM,0);
+printf("CLIENT SOCKET CREATED\n");
+
+server.sin_family=AF_INET;
+server.sin_port=htons(PORT);
+server.sin_addr.s_addr=inet_addr("127.0.0.1");
+
+connect(sockfd,(struct sockaddr *)&server,sizeof(server));
+printf("CONNECTED!!!\n");
+
+
+recv(sockfd,buffer,1024,0);
+
+printf("The data recieved -> %s",buffer);
+
+return 0;
+}
